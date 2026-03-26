@@ -3,7 +3,10 @@ name: Build APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:   # bisa trigger manual dari GitHub web
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
@@ -18,19 +21,51 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Android SDK (manual, paling stabil)
+        run: |
+          ANDROID_SDK_ROOT="${HOME}/android-sdk"
+          mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
+          
+          # Download command line tools terbaru
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdtools.zip
+          unzip -q cmdtools.zip -d "$ANDROID_SDK_ROOT/cmdline-tools"
+          mv "$ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+          
+          # Set env vars
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT"     >> $GITHUB_ENV
+          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$ANDROID_SDK_ROOT/platform-tools"   >> $GITHUB_PATH
+          
+          # Accept licenses & install komponen yang dibutuhkan
+          yes | sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses > /dev/null 2>&1
+          sdkmanager --sdk_root="$ANDROID_SDK_ROOT" \
+            "platforms;android-34" \
+            "build-tools;34.0.0" \
+            "platform-tools"
 
       - name: Beri izin gradlew
         run: chmod +x ./gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Generate Gradle Wrapper (jika jar belum ada)
+        run: |
+          if [ ! -f "gradle/wrapper/gradle-wrapper.jar" ]; then
+            # Download gradle binary untuk generate wrapper
+            GRADLE_VERSION="8.1.1"
+            wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O gradle.zip
+            unzip -q gradle.zip
+            "./gradle-${GRADLE_VERSION}/bin/gradle" wrapper --gradle-version="${GRADLE_VERSION}"
+            rm -rf gradle.zip "gradle-${GRADLE_VERSION}"
+          fi
 
-      - name: Upload APK sebagai artifact
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: NotifForwarder-debug
           path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 7   # tersimpan 7 hari, bisa didownload
+          retention-days: 7
