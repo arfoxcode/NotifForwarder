@@ -11,60 +11,55 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout kode
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: Setup Android SDK (manual, paling stabil)
+      - name: Setup Android SDK
         run: |
           ANDROID_SDK_ROOT="${HOME}/android-sdk"
           mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
-          
-          # Download command line tools terbaru
+
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdtools.zip
           unzip -q cmdtools.zip -d "$ANDROID_SDK_ROOT/cmdline-tools"
           mv "$ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools" "$ANDROID_SDK_ROOT/cmdline-tools/latest"
-          
-          # Set env vars
+          rm cmdtools.zip
+
+          # Tulis ke GITHUB_ENV agar step berikutnya bisa pakai
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT"     >> $GITHUB_ENV
-          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          echo "$ANDROID_SDK_ROOT/platform-tools"   >> $GITHUB_PATH
-          
-          # Accept licenses & install komponen yang dibutuhkan
-          yes | sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses > /dev/null 2>&1
-          sdkmanager --sdk_root="$ANDROID_SDK_ROOT" \
+
+          # Jalankan sdkmanager langsung dengan path penuh di step ini
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+
+          yes | "$SDKMANAGER" --sdk_root="$ANDROID_SDK_ROOT" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" --sdk_root="$ANDROID_SDK_ROOT" \
             "platforms;android-34" \
-            "build-tools;34.0.0" \
-            "platform-tools"
+            "build-tools;34.0.0"
 
-      - name: Beri izin gradlew
-        run: chmod +x ./gradlew
+          # Tambah ke PATH untuk step selanjutnya
+          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$ANDROID_SDK_ROOT/platform-tools"           >> $GITHUB_PATH
 
-      - name: Generate Gradle Wrapper (jika jar belum ada)
+      - name: Generate Gradle Wrapper
         run: |
           if [ ! -f "gradle/wrapper/gradle-wrapper.jar" ]; then
-            # Download gradle binary untuk generate wrapper
-            GRADLE_VERSION="8.1.1"
-            wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O gradle.zip
+            wget -q https://services.gradle.org/distributions/gradle-8.1.1-bin.zip -O gradle.zip
             unzip -q gradle.zip
-            "./gradle-${GRADLE_VERSION}/bin/gradle" wrapper --gradle-version="${GRADLE_VERSION}"
-            rm -rf gradle.zip "gradle-${GRADLE_VERSION}"
+            ./gradle-8.1.1/bin/gradle wrapper --gradle-version=8.1.1
+            rm -rf gradle.zip gradle-8.1.1
           fi
+          chmod +x gradlew
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: NotifForwarder-debug
           path: app/build/outputs/apk/debug/app-debug.apk
