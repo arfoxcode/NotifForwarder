@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Notif Forwarder</string>
+    <string name="filter_title">Filter Aplikasi</string>
+    <string name="info_content">1. Isi Bot Token dan Chat ID, lalu Simpan\n2. Tekan Izinkan Akses, pilih app ini\n3. Opsional: filter app tertentu\n4. Tekan Sembunyikan Ikon\n\nUntuk membuka kembali:\nDial pad ketik *#*#8642#*#*</string>
 </resources>

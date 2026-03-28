@@ -2,95 +2,62 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F0F0F0">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
-        <!-- Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="📲 Notif Forwarder"
-            android:textSize="26sp"
+            android:text="@string/app_name"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#1A1A2E"
-            android:layout_marginBottom="4dp"/>
+            android:textColor="#212121"
+            android:layout_marginBottom="16dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Teruskan semua notifikasi ke Telegram"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- Status Card -->
+        <!-- Status -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
+            android:background="#FFFFFF"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="STATUS"
-                android:textSize="11sp"
-                android:textColor="#888888"
-                android:textStyle="bold"
-                android:letterSpacing="0.1"
-                android:layout_marginBottom="8dp"/>
+            android:padding="14dp"
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Memeriksa izin..."
-                android:textSize="14sp"/>
+                android:text="Memeriksa..."
+                android:textSize="13sp"/>
 
-            <!-- Status Icon -->
-        <TextView
-            android:id="@+id/tvIconStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="👁 Ikon: TERLIHAT di beranda"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/tvIconStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Memeriksa ikon..."
+                android:textSize="13sp"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
 
-    </LinearLayout>
-
-        <!-- Settings Card -->
+        <!-- Konfigurasi -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
+            android:background="#FFFFFF"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
+            android:padding="14dp"
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="KONFIGURASI TELEGRAM"
-                android:textSize="11sp"
-                android:textColor="#888888"
-                android:textStyle="bold"
-                android:letterSpacing="0.1"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- Bot Token -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="Bot Token"
-                android:textSize="13sp"
-                android:textColor="#444444"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 
@@ -98,20 +65,16 @@
                 android:id="@+id/etBotToken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="123456789:ABCdefGHI..."
+                android:hint="123456789:ABCdef..."
                 android:inputType="text"
                 android:singleLine="true"
-                android:background="@drawable/input_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="12dp"/>
 
-            <!-- Chat ID -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chat ID"
-                android:textSize="13sp"
-                android:textColor="#444444"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 
@@ -119,20 +82,16 @@
                 android:id="@+id/etChatId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="-1001234567890 atau 123456789"
+                android:hint="-100123456789"
                 android:inputType="text"
                 android:singleLine="true"
-                android:background="@drawable/input_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="12dp"/>
 
-            <!-- Prefix -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Awalan Pesan (opsional)"
-                android:textSize="13sp"
-                android:textColor="#444444"
+                android:text="Awalan Pesan"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 
@@ -140,14 +99,11 @@
                 android:id="@+id/etPrefix"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="📱 Notifikasi dari HP:"
+                android:hint="Notifikasi dari HP:"
                 android:inputType="text"
                 android:singleLine="true"
-                android:background="@drawable/input_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="12dp"/>
 
-            <!-- Enable Switch -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,8 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Aktifkan Forwarding"
-                    android:textSize="14sp"
-                    android:textColor="#333333"/>
+                    android:textSize="14sp"/>
 
                 <Switch
                     android:id="@+id/switchEnabled"
@@ -168,75 +123,57 @@
                     android:layout_height="wrap_content"
                     android:checked="true"/>
             </LinearLayout>
-
         </LinearLayout>
 
-        <!-- Buttons -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="💾 Simpan Pengaturan"
-            android:textSize="16sp"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="52dp"
+            android:text="Simpan Pengaturan"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/btnGrant"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="🔐 Izinkan Akses Notifikasi"
-            android:textSize="16sp"
-            android:backgroundTint="#2196F3"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="52dp"
+            android:text="Izinkan Akses Notifikasi"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/btnFilter"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="📋 Pilih Aplikasi yang Diteruskan"
-            android:textSize="16sp"
-            android:backgroundTint="#9C27B0"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="52dp"
+            android:text="Pilih Aplikasi yang Diteruskan"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/btnHide"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="🙈 Sembunyikan Ikon dari Beranda"
-            android:textSize="16sp"
-            android:backgroundTint="#FF5722"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="24dp"/>
+            android:layout_height="52dp"
+            android:text="Sembunyikan Ikon"
+            android:layout_marginBottom="16dp"/>
 
         <!-- Info -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_background"
+            android:background="#FFFFFF"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="14dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ℹ️ Cara Penggunaan"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:layout_marginBottom="8dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1. Isi Bot Token &amp; Chat ID → Simpan\n2. Tekan Izinkan Akses → pilih app ini\n3. Tekan Sembunyikan Ikon\n4. App berjalan di background\n\n🔓 Untuk membuka kembali:\nBuka dial pad → ketik  *#*#8642#*#*"
+                android:text="Cara Penggunaan"
                 android:textSize="13sp"
-                android:textColor="#555555"
-                android:lineSpacingMultiplier="1.5"/>
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info_content"
+                android:textSize="12sp"/>
         </LinearLayout>
 
     </LinearLayout>
