@@ -6,6 +6,7 @@ android {
     compileSdk 34
 
     defaultConfig {
+	namespace "com.arif.notifforwarder"
         applicationId "com.arif.notifforwarder"
         minSdk 26
         targetSdk 34
